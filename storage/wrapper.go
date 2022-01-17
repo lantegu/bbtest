@@ -9,10 +9,10 @@ import (
 type RushDataWrapper struct {
 	Id        int
 	readTime time.Time
-	LogInfo []string
+	Info []string
 }
 
-func NewRushDataWrapper(id int, logInfo []string, readTime time.Time) *RushDataWrapper {
-	return &RushDataWrapper{Id:id, LogInfo: logInfo, readTime: readTime}
+func NewRushDataWrapper(id int, info []string, readTime time.Time) *RushDataWrapper {
+	return &RushDataWrapper{Id:id, Info: info, readTime: readTime}
 }
 

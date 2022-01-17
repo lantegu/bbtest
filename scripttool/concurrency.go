@@ -21,6 +21,7 @@ func rushDataRoutine(ctx context.Context, routineNum int, rushDataListStream <-c
 					return 
 				default:
 				}
+				//此处设置超时模块，
 				logger := rushData(rowData)
 				recordListStream <- logger
 			}

@@ -32,7 +32,7 @@ func TestRunSh(t *testing.T) {
 	if err != nil {
 		fmt.Print(err)
 	}
-	err = funcRun.RunSh("./heart.csv", recorder, scripttool.Percent, 100,script.ReadCsvFile, script.FilterFeMale)
+	err = funcRun.RunSh("./heart.csv", recorder, scripttool.Percent, 100,script.ReadCsvFile, script.FilterOlder)
 	if err != nil {
 		fmt.Print(err)
 	} else {
