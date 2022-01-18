@@ -5,6 +5,7 @@ import (
 	scripttool "bbtest/scripttool"
 	"bbtest/storage"
 	"fmt"
+	"time"
 )
 
 func main (){
@@ -13,7 +14,8 @@ func main (){
 	if err != nil {
 		fmt.Print(err)
 	}
-	err = funcRun.RunSh("./scripttool/test/heart.csv", recorder, scripttool.Percent, 100,script.ReadCsvFile, script.FilterOlder)
+	options := scripttool.NewOptions(scripttool.Percent, 100, time.Millisecond, 5)
+	err = funcRun.RunSh("./scripttool/test/sub_heart.csv", recorder, *options, script.ReadCsvFile, script.FilterOlder)
 	if err != nil {
 		fmt.Print(err)
 	} else {

@@ -1,8 +1,9 @@
 package scripttool
 
 import (
-	"fmt"
 	scripttool "bbtest/scripttool"
+	"context"
+	"fmt"
 	"testing"
 	"time"
 )
@@ -57,4 +58,11 @@ func TestConsumer(t *testing.T) {
 	fmt.Print("not ready")
 	close(intStream)
 	time.Sleep(3*time.Second)
+}
+
+func TestCancelContext(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	cancel()
+	ctx.Done()
 }

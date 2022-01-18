@@ -1,16 +1,18 @@
 package scripttool
 
 import (
-	"context"
 	storage "bbtest/storage"
+	"context"
 	"sort"
 	"sync"
+	"time"
 )
 
 // 多信号量模式，开启时执行多个rushData协程，每个完成后给logDataRoutine发送完成信号，收到所有完成信号后
 //logData关闭
 
 func rushDataRoutine(ctx context.Context, routineNum int, rushDataListStream <-chan storage.RushDataWrapper,
+	timeOut time.Duration, retryCount int,
 	rushData func(rushDataWrapper storage.RushDataWrapper) (storage.Logger)) chan storage.Logger  {
 		recordListStream := make(chan storage.Logger)
 		go func() {
@@ -21,9 +23,7 @@ func rushDataRoutine(ctx context.Context, routineNum int, rushDataListStream <-c
 					return 
 				default:
 				}
-				//此处设置超时模块，
-				logger := rushData(rowData)
-				recordListStream <- logger
+				TimeoutFunc(timeOut, recordListStream, rowData, rushData)
 			}
 		}()
 		return recordListStream
@@ -53,7 +53,6 @@ func logDataRoutine(ctx context.Context, loggerListStream <-chan storage.Logger,
 		recorder.RecordData(logger.LogData())
 	}
 	recorder.Flush()
-	return
 }
 
 // 扇入函数

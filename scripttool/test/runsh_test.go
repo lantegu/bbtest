@@ -1,11 +1,12 @@
 package scripttool
 
 import (
-	"fmt"
 	script "bbtest/script"
 	scripttool "bbtest/scripttool"
 	"bbtest/storage"
+	"fmt"
 	"testing"
+	"time"
 )
 
 func TestChanStringList(t *testing.T) {
@@ -29,10 +30,11 @@ func TestChanStringList(t *testing.T) {
 func TestRunSh(t *testing.T) {
 	funcRun := scripttool.NewFuncRun("./logger")
 	recorder, err := storage.NewCsvRecorder("./test.csv")
+	options := scripttool.NewOptions(scripttool.Percent, 100, time.Second, 5)
 	if err != nil {
 		fmt.Print(err)
 	}
-	err = funcRun.RunSh("./heart.csv", recorder, scripttool.Percent, 100,script.ReadCsvFile, script.FilterOlder)
+	err = funcRun.RunSh("./heart.csv", recorder, *options, script.ReadCsvFile, script.FilterOlder)
 	if err != nil {
 		fmt.Print(err)
 	} else {
