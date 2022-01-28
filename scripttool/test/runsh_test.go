@@ -6,7 +6,6 @@ import (
 	"bbtest/storage"
 	"fmt"
 	"testing"
-	"time"
 )
 
 func TestChanStringList(t *testing.T) {
@@ -30,11 +29,11 @@ func TestChanStringList(t *testing.T) {
 func TestRunSh(t *testing.T) {
 	funcRun := scripttool.NewFuncRun("./logger")
 	recorder, err := storage.NewCsvRecorder("./test.csv")
-	options := scripttool.NewOptions(scripttool.Percent, 100, time.Second, 5)
 	if err != nil {
 		fmt.Print(err)
 	}
-	err = funcRun.RunSh("./heart.csv", recorder, *options, script.ReadCsvFile, script.FilterOlder)
+	err = funcRun.RunSh("./heart.csv", recorder, script.ReadCsvFile, script.FilterOlder,
+ scripttool.RandomSelectData(50))
 	if err != nil {
 		fmt.Print(err)
 	} else {

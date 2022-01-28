@@ -34,7 +34,7 @@ func TestPatternFilter(t *testing.T) {
 	for _, answer := range answers {
 		batchData = append(batchData, []string{answer})
 	}
-	filterData, _ := scripttool.PatternFilter(batchData, scripttool.Percent, 50)
+	filterData, _ := scripttool.PatternFilter(batchData, scripttool.Order, 50)
 	fmt.Print(filterData,"\n")
 	fmt.Print(len(batchData),"\n")
 	fmt.Print(len(filterData),"\n")

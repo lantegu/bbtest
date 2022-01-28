@@ -6,6 +6,6 @@ const (
 )
 
 const (
-	Percent = iota
+	Order = iota
 	Random
 )

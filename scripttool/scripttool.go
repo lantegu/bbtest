@@ -35,10 +35,12 @@ func NewFuncRun(outLocation string) *funcRun {
 }
 
 // 传入读取单位数据的函数,rushData返回一个接口，或者一个log错误
-func (runner *funcRun) RunSh(filepath string, recorder storage.Recorder, options Options,
+func (runner *funcRun) RunSh(filepath string, recorder storage.Recorder,
 readData func (filepath string) ([][]string, error), 
-rushData func(rushDataWrapper storage.RushDataWrapper) (storage.Logger)) error {
-	rowDataList, err := GetRowdataList(filepath, readData, options.dataReadPattern, options.proportion)
+rushData func(rushDataWrapper storage.RushDataWrapper) (storage.Logger),
+option ...Option) error {
+	config := SetConfig(option)
+	rowDataList, err := GetRowdataList(filepath, readData, *config)
 	if err != nil {
 		return err
 	}
@@ -50,13 +52,10 @@ rushData func(rushDataWrapper storage.RushDataWrapper) (storage.Logger)) error {
 	}
 	done := make(chan interface{})
 	for i := 0; i < RoutineCount; i++ {
-		logDataStreamList[i] = rushDataRoutine(ctx, i, rowDataStream,options.timeOut,options.retryCount,
-			rushData)
+		logDataStreamList[i] = rushDataRoutine(ctx, i, rowDataStream, *config, rushData)
 	}
 
-	defer func(){
-		cancel()
-	}()
+	defer cancel()
 
 	logDataStream := fanIn(logDataStreamList...)
 	go logDataRoutine(ctx, logDataStream, recorder, done)

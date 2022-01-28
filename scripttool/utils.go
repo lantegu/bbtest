@@ -7,12 +7,12 @@ import (
 )
 
 func GetRowdataList(filepath string , readData func (filepath string) ([][]string, error),
-dataReadPattern int, proportion int) (res [][]string, err error){
+config Config) (res [][]string, err error){
 	batchData, err := readData(filepath)
 	if err != nil {
 		return nil, err
 	}
-	batchData, err = PatternFilter(batchData, dataReadPattern, proportion)
+	batchData, err = PatternFilter(batchData, config.GetDataReadPattern(), config.GetProportion())
 	if err != nil {
 		return nil, err
 	}
@@ -23,8 +23,8 @@ func PatternFilter(batchData [][]string, dataReadPattern int, proportion int) ([
 	if  proportion < 0 || proportion > 100 {
 		return nil, errors.New("proportion should between in 0-100")
 	} 
-	if dataReadPattern == Percent {
-		return percentSelected(batchData, proportion), nil
+	if dataReadPattern == Order {
+		return orderSelected(batchData, proportion), nil
 	}
 	return randomSelected(batchData, proportion), nil
 }
@@ -40,7 +40,7 @@ func randomSelected(batchData [][]string, proportion int) (res [][]string) {
 	return res
 }
 
-func percentSelected(batchData [][]string, proportion int) (res [][]string) {
+func orderSelected(batchData [][]string, proportion int) (res [][]string) {
 	res = make([][]string, int(len(batchData) * proportion/100))
 	copy(res, batchData[:int(len(batchData) * proportion/100)])
 	return res
