@@ -2,6 +2,7 @@ package scripttool
 
 import (
 	"context"
+	script "bbtest/script"
 	storage "bbtest/storage"
 	"time"
 )
@@ -37,8 +38,7 @@ func NewFuncRun(outLocation string) *funcRun {
 // 传入读取单位数据的函数,rushData返回一个接口，或者一个log错误
 func (runner *funcRun) RunSh(filepath string, recorder storage.Recorder,
 readData func (filepath string) ([][]string, error), 
-rushData func(rushDataWrapper storage.RushDataWrapper) (storage.Logger),
-option ...Option) error {
+rushData script.RushData, option ...Option) error {
 	config := SetConfig(option)
 	rowDataList, err := GetRowdataList(filepath, readData, *config)
 	if err != nil {

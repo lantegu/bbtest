@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func main (){
+func main() {
 	funcRun := scripttool.NewFuncRun("./logger")
 	recorder, err := storage.NewCsvRecorder("./test.csv")
 	if err != nil {
