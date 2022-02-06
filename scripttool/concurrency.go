@@ -19,7 +19,7 @@ func rushDataRoutine(ctx context.Context, routineNum int, rushDataListStream <-c
 			for rowData := range rushDataListStream {
 				select {
 				case <- ctx.Done():
-					return 
+					return
 				default:
 				}
 				TimeoutFunc(config.GetTimeout(), recordListStream, rowData, rushData)
